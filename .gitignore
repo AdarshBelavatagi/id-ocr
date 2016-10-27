@@ -90,3 +90,4 @@ ENV/
 
 output_data/**
 !output_data/.nodata
+temp
