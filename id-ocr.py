@@ -1,9 +1,12 @@
 import pygame
 import sys
 import pytesseract
+import PIL
+import Image
 from PIL import Image
 
 pygame.init()
+
 
 
 def setup(path):
@@ -64,7 +67,12 @@ def mainLoop(screen, px):
     return (topleft + bottomright)
 
 if __name__ == "__main__":
-    input_loc = './input_data/id_b.jpg'
+
+    img = Image.open('./input_data/id_b.jpg')
+    img = img.resize((1024,int((float(img.size[1])*float((1024/float(img.size[0])))))), PIL.Image.ANTIALIAS)
+    img.save('./output_data/sompic.jpg')
+
+    input_loc = './output_data/sompic.jpg'
     output_loc = './output_data/out.png'
     screen, px = setup(input_loc)
     left, upper, right, lower = mainLoop(screen, px)
