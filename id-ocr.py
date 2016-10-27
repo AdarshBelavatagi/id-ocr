@@ -64,8 +64,8 @@ def mainLoop(screen, px):
     return (topleft + bottomright)
 
 if __name__ == "__main__":
-    input_loc = 'sompic.jpg'
-    output_loc = 'out.png'
+    input_loc = './input_data/id_b.jpg'
+    output_loc = './output_data/out.png'
     screen, px = setup(input_loc)
     left, upper, right, lower = mainLoop(screen, px)
 
@@ -80,6 +80,6 @@ if __name__ == "__main__":
     im.save(output_loc)
     pass
 
-text_file = open("file.txt", "w")  # open text file
-a = pytesseract.image_to_string(Image.open('out.png'))
+text_file = open("./output_data/file.txt", "w")  # open text file
+a = pytesseract.image_to_string(Image.open('./output_data/out.png'))
 print(text_file.write(a))
