@@ -8,7 +8,6 @@ from PIL import Image
 pygame.init()
 
 
-
 def setup(path):
     px = pygame.image.load(path)
     screen = pygame.display.set_mode(px.get_rect()[2:])
@@ -69,7 +68,8 @@ def mainLoop(screen, px):
 if __name__ == "__main__":
 
     img = Image.open('./input_data/id_b.jpg')
-    img = img.resize((1024,int((float(img.size[1])*float((1024/float(img.size[0])))))), PIL.Image.ANTIALIAS)
+    img = img.resize((1024, int(
+        (float(img.size[1]) * float((1024 / float(img.size[0])))))), PIL.Image.ANTIALIAS)
     img.save('./output_data/sompic.jpg')
 
     input_loc = './output_data/sompic.jpg'
