@@ -87,7 +87,7 @@ if __name__ == "__main__":
         lower, upper = upper, lower
     im = Image.open(input_loc)
     im = im.crop((left, upper, right, lower))
-    # pygame.display.quit()
+    pygame.display.quit()
     im.save(output_loc)
     pass
 
