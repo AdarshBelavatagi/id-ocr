@@ -68,29 +68,34 @@ def mainLoop(screen, px):
 
     return (topleft + bottomright)
 
-if __name__ == "__main__":
 
-    img = Image.open('./input_data/id_f.jpg')
-    img = img.resize((1024, int(
-        (float(img.size[1]) * float(1024 / float(img.size[0]))))), PIL.Image.ANTIALIAS)
-    img.save('./output_data/sompic.jpg')
+input_loc = './output_data/sompic.jpg'
 
-    input_loc = './output_data/sompic.jpg'
-    output_loc = './output_data/out.png'
-    screen, px = setup(input_loc)
-    left, upper, right, lower = mainLoop(screen, px)
+try:
+    def backgroundMain():
+        img = Image.open('./input_data/id_f.jpg')
+        img = img.resize((1200, int(
+            (float(img.size[1]) * float(1200 / float(img.size[0]))))), PIL.Image.ANTIALIAS)
+        img.save('./output_data/sompic.jpg')
+        output_loc = './output_data/out.png'
+        screen, px = setup(input_loc)
+        left, upper, right, lower = mainLoop(screen, px)
 
-    # ensure output rect always has positive width, height
-    if right < left:
-        left, right = right, left
-    if lower < upper:
-        lower, upper = upper, lower
-    im = Image.open(input_loc)
-    im = im.crop((left, upper, right, lower))
-    pygame.display.quit()
-    im.save(output_loc)
+        # ensure output rect always has positive width, height
+        if right < left:
+            left, right = right, left
+        if lower < upper:
+            lower, upper = upper, lower
+        im = Image.open(input_loc)
+        im = im.crop((left, upper, right, lower))
+        pygame.display.quit()
+        im.save(output_loc)
+        pass
+
+    while 1:
+        backgroundMain()
+        text_file = open("./output_data/file.txt", "a")  # open text file
+        a = pytesseract.image_to_string(Image.open('./output_data/out.png'))
+        print(text_file.write(a + "\n\n"))
+except (RuntimeError, TypeError, NameError):
     pass
-
-text_file = open("./output_data/file.txt", "w")  # open text file
-a = pytesseract.image_to_string(Image.open('./output_data/out.png'))
-print(text_file.write(a))
