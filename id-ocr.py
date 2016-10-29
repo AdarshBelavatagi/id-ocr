@@ -1,7 +1,8 @@
 import pygame
 import sys
 import pytesseract
-from PIL import Image
+import PIL
+import Image
 
 pygame.init()
 
@@ -11,7 +12,6 @@ def setup(path):
     screen = pygame.display.set_mode(px.get_rect()[2:])
     screen.blit(px, px.get_rect())
     pygame.display.flip()
-
     return screen, px
 
 
@@ -58,28 +58,44 @@ def mainLoop(screen, px):
                 else:
                     bottomright = event.pos
                     n = 1
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.display.quit()
+                pygame.quit()
+
         if topleft:
             prior = displayImage(screen, px, topleft, prior)
 
     return (topleft + bottomright)
 
-if __name__ == "__main__":
-    input_loc = './input_data/id_b.jpg'
-    output_loc = './output_data/out.png'
-    screen, px = setup(input_loc)
-    left, upper, right, lower = mainLoop(screen, px)
 
-    # ensure output rect always has positive width, height
-    if right < left:
-        left, right = right, left
-    if lower < upper:
-        lower, upper = upper, lower
-    im = Image.open(input_loc)
-    im = im.crop((left, upper, right, lower))
-    # pygame.display.quit()
-    im.save(output_loc)
+input_loc = './output_data/sompic.jpg'
+
+try:
+    def backgroundMain():
+        img = Image.open('./input_data/id_f.jpg')
+        img = img.resize((1200, int(
+            (float(img.size[1]) * float(1200 / float(img.size[0]))))), PIL.Image.ANTIALIAS)
+        img.save('./output_data/sompic.jpg')
+        output_loc = './output_data/out.png'
+        screen, px = setup(input_loc)
+        left, upper, right, lower = mainLoop(screen, px)
+
+        # ensure output rect always has positive width, height
+        if right < left:
+            left, right = right, left
+        if lower < upper:
+            lower, upper = upper, lower
+        im = Image.open(input_loc)
+        im = im.crop((left, upper, right, lower))
+        pygame.display.quit()
+        im.save(output_loc)
+        pass
+
+    while 1:
+        backgroundMain()
+        text_file = open("./output_data/file.txt", "a")  # open text file
+        a = pytesseract.image_to_string(Image.open('./output_data/out.png'))
+        print(text_file.write(a + "\n\n"))
+except (RuntimeError, TypeError, NameError):
     pass
-
-text_file = open("./output_data/file.txt", "w")  # open text file
-a = pytesseract.image_to_string(Image.open('./output_data/out.png'))
-print(text_file.write(a))
