@@ -3,7 +3,8 @@ import sys
 import pytesseract
 import PIL
 import Image
-
+import json
+once = 1
 pygame.init()
 
 
@@ -20,6 +21,7 @@ def displayImage(screen, px, topleft, prior):
     x, y = topleft
     width = pygame.mouse.get_pos()[0] - topleft[0]
     height = pygame.mouse.get_pos()[1] - topleft[1]
+
     if width < 0:
         x += width
         width = abs(width)
@@ -69,14 +71,14 @@ def mainLoop(screen, px):
     return (topleft + bottomright)
 
 
-input_loc = './output_data/sompic.jpg'
+input_loc = './output_data/sompic.png'
 
 try:
     def backgroundMain():
         img = Image.open('./input_data/id_f.jpg')
         img = img.resize((1200, int(
             (float(img.size[1]) * float(1200 / float(img.size[0]))))), PIL.Image.ANTIALIAS)
-        img.save('./output_data/sompic.jpg')
+        img.save('./output_data/sompic.png')
         output_loc = './output_data/out.png'
         screen, px = setup(input_loc)
         left, upper, right, lower = mainLoop(screen, px)
@@ -87,15 +89,24 @@ try:
         if lower < upper:
             lower, upper = upper, lower
         im = Image.open(input_loc)
+        print left, upper, right, lower
         im = im.crop((left, upper, right, lower))
         pygame.display.quit()
         im.save(output_loc)
+        print "\nThis is size of image"
+        print im.size
+
         pass
 
     while 1:
         backgroundMain()
         text_file = open("./output_data/file.txt", "a")  # open text file
+        #var = raw_input("Enter selection identity: ")
+        # print "You entered", var
         a = pytesseract.image_to_string(Image.open('./output_data/out.png'))
-        print(text_file.write(a + "\n\n"))
+        text_file.write(a)
+        #text_file.write(var + "\n")
+
+
 except (RuntimeError, TypeError, NameError):
     pass
