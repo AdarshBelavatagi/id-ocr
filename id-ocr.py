@@ -89,7 +89,19 @@ try:
         if lower < upper:
             lower, upper = upper, lower
         im = Image.open(input_loc)
+
         print left, upper, right, lower
+        j = [{'x1': left, 'y1': upper, 'x2': right, 'y2': lower}]
+
+        var = raw_input("Enter selection identity: ")
+        var1 = str(var)
+        if var1 == "name":
+            f = open("./output_data/name.json", "a")
+            json.dump(j, f, )
+        if var1 == "address":
+            f = open("./output_data/address.json", "a")
+            json.dump(j, f, )
+
         im = im.crop((left, upper, right, lower))
         pygame.display.quit()
         im.save(output_loc)
