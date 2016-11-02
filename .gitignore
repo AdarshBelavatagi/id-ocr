@@ -88,6 +88,6 @@ ENV/
 # Rope project settings
 .ropeproject
 
-output_data/**
-!output_data/.nodata
+output
 temp
+intermediate
