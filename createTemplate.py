@@ -10,7 +10,7 @@ import shutil
 ##########################################################################
 # Settings
 verbose = True
-inputImage = "./input_data/id_f.jpg"
+inputImage = "./input_data/set1.jpg"
 intermediateFolder = "./intermediate"
 outputFolder = "./output"
 templateFile = outputFolder + "/template.json"
@@ -103,7 +103,6 @@ def displayImage(screen, px, topleft, prior):
     # return current box extents
     return (x, y, width, height)
 
-
 def mainLoop(screen, px):
     if verbose:
         print "Came in mainLoop function"
@@ -128,8 +127,6 @@ def mainLoop(screen, px):
                         print "Detected Exit, made running False"
                     running = False
                     pygame.quit()
-                    #pygame.display.quit()
-                    #pygame.quit()
 
             if topleft:
                 prior = displayImage(screen, px, topleft, prior)
@@ -140,7 +137,6 @@ def mainLoop(screen, px):
     if running:
         return (topleft + bottomright)
 
-# try:
 def backgroundMain():
     if verbose:
         print "Came in backgroundMain function"
@@ -208,7 +204,7 @@ def backgroundMain():
     print "Read data is :" + readData
     fieldName = raw_input("What is this field Name ?")
 
-    mainJSON[fieldName] = {'x1': left, 'y1': upper, 'x2': right, 'y2': lower}
+    mainJSON[fieldName] = {'left': left, 'upper': upper, 'right': right, 'lower': lower}
 
     with open(templateFile, 'w') as outfile:
         json.dump(mainJSON, outfile)
