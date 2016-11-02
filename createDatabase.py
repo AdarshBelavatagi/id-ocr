@@ -12,6 +12,7 @@ inputFolder = "./input_data/imageset/set1"
 intermediateFolder = "./intermediate/set1"
 outputFolder = "./output/set1"
 templateFile = "./output/template.json"
+databaseFile = "./output/database.json"
 
 ##########################################################################
 # Initializations
@@ -53,7 +54,7 @@ os.makedirs(outputFolder)
 
 ##########################################################################
 # Main Program
-
+database=[]
 with open(templateFile, 'r') as f:
     template = json.load(f)
     if verbose:
@@ -75,6 +76,8 @@ with open(templateFile, 'r') as f:
 
         scaledImg.save(scaledImgPath)
 
+        info = {}
+
         for key, value in template.iteritems():
             croppedImage = scaledImg.crop(
                 (value['left'], value['upper'], value['right'], value['lower']))
@@ -85,5 +88,20 @@ with open(templateFile, 'r') as f:
                               str(index) + '_' + key + '.png')
             readData = pytesseract.image_to_string(croppedImage)
             print "readData : ", readData
+
+            info[key] = readData
+
+        database.append(info)
         index+=1
-        
+
+if verbose:
+    print 'Database created'
+    print database
+
+print "Database created at :" + databaseFile
+
+
+with open(databaseFile, 'w') as outfile:
+    json.dump(database, outfile)
+    if verbose:
+        print "saved to database file :", databaseFile
